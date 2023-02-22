@@ -32,7 +32,7 @@
 
 > **Проводить до запуска машин, точнее, до установки системы на машины, чтобы не страдать, ибо при установке все настраивается автоматически**
 
-1. Создать DHCP-сервер для будущей внутренней сети (`Internal network`) между виртуальными машинами (выполнять в терминале хостовой **НЕ**виртуальной машины) :
+1. Создать DHCP-сервер для будущей внутренней сети (`Internal network`) между виртуальными машинами (выполнять в терминале хостовой **НЕ**виртуальной машины), (подробнее: [Источник 1](https://54m4ri74n.medium.com/building-an-internal-network-in-virtualbox-d0a4974882d0)):
         
         # создать
         $ vboxmanage dhcpserver add --netname intnet --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.212 --enable
@@ -64,3 +64,82 @@
 4. Нажать `OK`, завершив настройку первой машины.
 5. Повторить пункты 2-4 для второй машины (да, по условию на второй машине не должно быть соединения с интернетом, но нам необходимо установить apache, потом адаптер для подключения к сети интернет мы отключим)
 
+## Установка систем
+
+1. Запустить машину (можно сразу две), нажав `Start`
+2. Если высвечивается ошибка, еще раз выбрать образ и `Mount and Retry Boot`:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220594027-5e0502f6-154b-4156-9f76-63a5072dd569.png" width=50% />
+    </p>
+3. Выбрать `Try or Install Ubuntu Server`:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220594680-38413aa6-ef39-4652-bb2d-f8b829892e95.png" width=50% />
+    </p>
+4. Язык:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220595035-d6ec43be-1edc-4d3b-99ef-4259a95f825e.png" width=50% />
+    </p>
+5. Обновление установщика (можно не обновлять):
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220595410-b8e1e20b-b14c-4004-b7d4-8601e77936fb.png" width=50% />
+    </p>
+6. Настройки клавиатуры:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220595566-96a4bbbc-d1b5-4d38-aaef-1156e2603a3f.png" width=50% />
+    </p>
+7. Тип установки:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220595793-a2ea4e44-1410-479f-b1b9-0fdd746fd271.png" width=50% />
+    </p>
+8. Если настройка сети была проведена, здесь должны появиться сетевые интерфейсы уже с ip-адресами
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220596067-2d9e96c8-4333-4e29-993e-08e939d9c753.png" width=50% />
+    </p>
+9. Прокси оставляем пустым:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220596310-ad435ba9-d3ed-4ebe-b171-7f747f6d3149.png" width=50% />
+    </p>
+10. Адрес зеркала оставляем:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220596557-b0592b94-9c2c-49b3-a6f7-7f960b372ed8.png" width=50% />
+    </p>
+11. Настройки диска оставляем:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220596858-ba74491e-508c-4e78-98ad-6c10e547b906.png" width=50% />
+    </p>
+12. Проверяем, подтверждаем:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220601999-3b7d22b3-e97c-4616-8c0b-b2f0d9325733.png" width=50% />
+    </p>
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220602147-ad998b77-dc2a-4aa5-b644-5e5636ce9661.png" width=50% />
+    </p>
+13. Настройки профиля:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220602519-86244d3f-e83c-4c47-bdb8-0c3545e46c8b.png" width=50% />
+    </p>
+14. OpenSSH можно устанавливать, можно нет:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220603034-e237e027-118d-4f6f-b52a-c52c45130ec4.png" width=50% />
+    </p>
+15. Допольнительные пакеты не ставим:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220605895-c3986ff4-420c-411b-8300-1540f38dbaa7.png" width=50% />
+    </p>
+16. Ждем установки до сообщения `sabiquity/Late/run` и нажимаем `Reboot Now`:
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220608054-58cfc9ab-79db-4cae-9ffb-04c9ca24c40e.png" width=50% />
+    </p>
+17. Ждем сообщения, что он не может отмонтировать образ установщика, и в `Devices -> Optical Drives` убираем галочку с образа установщика.
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220608423-e3e84ad4-4bcd-45f4-b36b-ba71907aa744.png" width=50% />
+    </p>
+18. Повтояем все для второй машины и заходим в обе системы
+
+## Установка и настройка Apache
+
+## Установка и настройка nginx
+
+## Выполнение задания
+
+# Теория по типу сетевых соединений

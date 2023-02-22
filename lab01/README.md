@@ -138,6 +138,76 @@
 
 ## Установка и настройка Apache
 
+> [Источник 2](https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-20-04-ru)
+
+0. Заходим во вторую виртуальную машину (далее просто `vm2`), введя логин и пароль, после входа выводится информация о системе в том числе и ip-адреса по каждому из настроенных сетевых интерфейсов (на верхнем рисунке `192.168.1.15` для моста и `10.10.10.3` для внутренней сети), также настроенные сетевые интерфейсы можно посмотреть с помощью команды `ip a` (нижний рисунок):
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220645400-a382c45f-b4d8-42a3-90e9-437691d72bb3.png" width=50% />
+    </p>
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220650551-0af24128-7058-48dd-bfaf-5ad5a2ee517a.png" width=50% />
+    </p>
+
+1. Обновляем списки пакетов:
+
+        $ sudo apt update
+
+2. Устанавливаем apache:
+
+        $ sudo apt install apache2
+
+3. Настраиваем межсетевой экран и запускаем apache:
+
+        # получить список
+        $ sudo ufw app list
+        Available applications:
+        Apache
+        Apache Full
+        Apache Secure
+        OpenSSH
+
+        # разрешить трафик для apache на порту 80
+        $ sudo ufw allow Apache
+        Rules updated
+        Rules updated (v6)
+
+        # включить ufw
+        $ sudo ufw enable
+        Firewall is active and enabled on system startup
+
+        # проверить
+        $ sudo ufw status
+        Status: active
+
+        To                         Action      From
+        --                         ------      ----
+        OpenSSH                    ALLOW       Anywhere
+        OpenSSH (v6)               ALLOW       Anywhere (v6)
+
+4. Проверяем, что веб-сервер был запущен:
+
+       $ sudo systemctl status apache2
+       ● apache2.service - The Apache HTTP Server
+        Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+        Active: active (running) since Thu 2023-02-22 14:38:15 UTC; 8min ago
+        ...
+
+5. Теперь из браузера хостовой машины должна по адресу `http://192.168.1.15/` должна быть доступна стартовая страница Apache:
+
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/220659419-870239db-a301-4bf5-b594-28b7040e6d3a.png" width=90% />
+    </p>
+
+6. Можно отключить адаптер, отвечающий за сетевой мост, после этого с хоста не будет доступа к стартовой странице
+
+    <p align="center">
+      <img src="" width=50% />
+    </p>
+
+    <p align="center">
+      <img src="" width=50% />
+    </p>
+
 ## Установка и настройка nginx
 
 ## Выполнение задания

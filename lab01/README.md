@@ -297,4 +297,9 @@
     </p>
 
 5. 🥳 Лаба сделана 🥳
+
 # Теория по типу сетевых соединений
+
+[Табличка](https://www.virtualbox.org/manual/ch06.html)
+
+[Картинки](https://www.nakivo.com/blog/virtualbox-network-setting-guide/)

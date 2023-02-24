@@ -180,9 +180,9 @@
         Status: active
 
         To                         Action      From
-        --                         ------      ----
-        OpenSSH                    ALLOW       Anywhere
-        OpenSSH (v6)               ALLOW       Anywhere (v6)
+        --                         ------      ----                
+        Apache                     ALLOW       Anywhere                           
+        Apache (v6)                ALLOW       Anywhere (v6)
 
 4. Проверяем, что веб-сервер был запущен:
 
@@ -209,6 +209,61 @@
     </p>
 
 ## Установка и настройка nginx
+
+> [Источник 3](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04-ru)
+
+0. Аналогично пункту 0 предыдущего раздела (`192.168.1.14` для моста и `10.10.10.2` для внутренней сети)
+
+1. Обновляем списки пакетов:
+
+        $ sudo apt update
+
+2. Устанавливаем nginx:
+
+        $ sudo apt install nginx
+
+3. Настраиваем межсетевой экран и запускаем nginx:
+
+        # получить список
+        $ sudo ufw app list
+        Available applications:
+          Nginx Full
+          Nginx HTTP
+          Nginx HTTPS
+          OpenSSH
+
+        # разрешить трафик для nginx на порту 80 без шифрования
+        $ sudo ufw allow 'Nginx HTTP'
+        Rules updated
+        Rules updated (v6)
+
+        # включить ufw
+        $ sudo ufw enable
+        Firewall is active and enabled on system startup
+
+        # проверить
+        $ sudo ufw status
+        Status: active
+
+        To                         Action      From
+        --                         ------      ----               
+        Nginx HTTP                 ALLOW       Anywhere                              
+        Nginx HTTP (v6)            ALLOW       Anywhere (v6)
+
+4. Проверяем, что веб-сервер был запущен:
+
+       $ sudo systemctl status nginx
+       ● nginx.service - A high performance web server and a reverse proxy server
+          Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+          Active: active (running) since Fri 2020-04-20 16:08:19 UTC; 3 days ago
+            Docs: man:nginx(8)
+          ...
+
+5. Теперь из браузера хостовой машины должна по адресу `http://192.168.1.14/` должна быть доступна стартовая страница nginx:
+
+    <p align="center">
+      <img src="https://user-images.githubusercontent.com/61819948/221179625-3b8e1f98-fd51-4ee3-a1f9-b9c68ebfaa06.png" width=90% />
+    </p>
 
 ## Выполнение задания
 

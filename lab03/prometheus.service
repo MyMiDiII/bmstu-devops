@@ -1,0 +1,20 @@
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Restart=on-failure
+ExecStart=/usr/local/bin/prometheus \
+  --config.file /etc/prometheus/prometheus.yml \
+  --storage.tsdb.path /var/lib/prometheus/ \
+# Установка циклической записи в 10 дней
+  --storage.tsdb.retention.time=10d
+ExecReload=/bin/kill -HUP $MAINPID
+ProtectHome=true
+ProtectSystem=full
+
+[Install]
+WantedBy=default.target

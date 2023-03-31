@@ -1,0 +1,11 @@
+groups:
+  - name: Nginx Alerts
+    rules:
+    - alert: Nginx Failed
+      expr: nginx_is_active == 0
+      for: 5s
+      labels:
+        severity: critical
+      annotations:
+        title: Nginx is Failed
+        description: '{{ $labels.instance }} nginx service has been down for more than 5 seconds.'

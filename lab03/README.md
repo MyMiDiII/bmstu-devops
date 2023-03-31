@@ -180,8 +180,75 @@ sudo crontab -e
 
 ![GrafanaGraph4](https://user-images.githubusercontent.com/61819948/229067667-249504c2-9a2d-4589-b15e-32269f85de73.png)
 
+## Сбор размера директории
 
+```bash
+# Создание файла задачи crontab
+# ОБЯЗАТЕЛЬНО С SUDO, чтобы были права на создание файлов
+sudo crontab -e
+# выбираем редактор (vim ❤️ -> 2)
+###
+no crontab for user - using an empty one
 
+Select an editor.  To change later, run 'select-editor'.
+  1. /bin/nano        <---- easiest
+  2. /usr/bin/vim.basic
+  3. /usr/bin/vim.tiny
+  4. /bin/ed
 
+Choose 1-4 [1]: 2
+###
+# Добавляем строку в открытый файл и сохраняем
+* * * * * directory-size.sh /var/lib/prometheus
+###
+
+# настройки в одноименном файле
+sudo vim /usr/local/bin/directory-size.sh
+
+# даем всем (чтобы не париться) права на выполнение
+sudo chmod ugo+x /usr/local/bin/directory-size.sh
+
+# КРОН работает
+
+# настройка node_exporter
+sudo vim /etc/systemd/system/node_exporter.service
+# дополнить строку флагами:
+###
+ExecStart=/usr/local/bin/node_exporter --collector.textfile --collector.textfile.directory=/var/lib/node_exporter
+###
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter # restart если уже запущен
+sudo systemctl status node_exporter
+```
+
+### Настройка grafana для чтения размера директории
+
+Добавляем новую панель
+
+С помощью bilder-а в нижней части экрана получаем метрику:
+
+![PromDir0](https://user-images.githubusercontent.com/61819948/229068969-9ccb8d9f-fa18-4bf6-901d-0640d5570ca4.png)
+
+Или код:
+
+```bash
+node_directory_size_bytes{directory="/var/lib/prometheus"}
+```
+
+Настройка с параметрами (для легенды):
+
+![PromDir1](https://user-images.githubusercontent.com/61819948/229069022-2416ea89-2aa1-42a6-9aae-59242e5fea82.png)
+
+Название графика:
+
+![PromDir2](https://user-images.githubusercontent.com/61819948/229069045-e7ed9550-f49f-44e0-8206-656dcaab437c.png)
+
+Настройки легенды:
+
+![PromDir3](https://user-images.githubusercontent.com/61819948/229069078-6664ec6e-cb65-4e64-8d64-603672d326d8.png)
+
+Итого:
+
+![PromDir4](https://user-images.githubusercontent.com/61819948/229069106-4a460abc-4308-44d5-8f61-3811d968173c.png)
 
 

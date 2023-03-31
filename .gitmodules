@@ -1,0 +1,3 @@
+[submodule "lab02"]
+	path = lab02
+	url = git@github.com:MyMiDiII/bmstu-devops-lab02.git

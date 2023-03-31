@@ -67,7 +67,7 @@ sudo systemctl start node_exporter
 sudo systemctl status node_exporter
 
 # vm1
-# настройки в одноименном файле
+# настройки в одноименном файле (то, что до alertmanager)
 sudo vim /etc/prometheus/prometheus.yml
 sudo systemctl reload prometheus
 ```
@@ -251,4 +251,58 @@ node_directory_size_bytes{directory="/var/lib/prometheus"}
 
 ![PromDir4](https://user-images.githubusercontent.com/61819948/229069106-4a460abc-4308-44d5-8f61-3811d968173c.png)
 
+## Alert Manager
 
+```bash
+wget https://github.com/prometheus/alertmanager/releases/download/v0.25.0/alertmanager-0.25.0.linux-amd64.tar.gz
+tar xf alertmanager-0.25.0.linux-amd64.tar.gz
+cd alertmanager-0.25.0.linux-amd64/
+sudo cp alertmanager /usr/local/bin/
+sudo mkdir /etc/alertmanager /var/lib/alertmanager
+sudo cp alertmanager.yml /etc/alertmanager
+sudo useradd --no-create-home --home-dir / --shell /bin/false alertmanager
+sudo chown -R alertmanager:alertmanager /var/lib/alertmanager
+```
+
+Сервис:
+
+```bash
+# настройки в одноименном файле
+sudo vim /etc/systemd/system/alertmanager.service
+
+sudo systemctl daemon-reload
+sudo systemctl start alertmanager
+sudo systemctl status alertmanager
+```
+
+Настройки:
+
+Бот → `/start`
+
+[TelepushBot](https://t.me/MiddlemanBot)
+
+Ответом → токен.
+
+```bash
+# настройки в одноименном файле
+sudo vim /etc/alertmanager/alertmanager.yml
+```
+
+```bash
+# настройки в одноименном файле
+sudo vim /etc/prometheus/nginx-alerts.yml
+```
+
+```bash
+# добавить то, что для alertmanager, если не добавляли
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+```bash
+# перезапускаем
+sudo systemctl restart alertmanager.service
+sudo systemctl status alertmanager.service
+
+sudo systemctl restart prometheus.service
+sudo systemctl status prometheus.service
+```

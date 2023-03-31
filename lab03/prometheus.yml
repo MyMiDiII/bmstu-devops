@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: node
+
+    static_configs:
+      - targets: ['<vm1_ip>:9100']
+      - targets: ['<vm2_ip>:9100']
+
+# для alertmanager
+rule_files:
+  - "nginx-alerts.yml" # имя файла из предыдущего листинга
+
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+       - localhost:9093
